@@ -13,7 +13,7 @@ SELECT TRIM(CONCAT(e.first_name, ' ', e.last_name)) AS seller, FLOOR(AVG(s.quant
 SELECT TRIM(CONCAT(e.first_name, ' ', e.last_name)) AS seller, TRIM(LOWER(TO_CHAR(s.sale_date, 'Day'))) AS day_of_week, FLOOR(SUM(s.quantity * p.price)) AS income FROM sales s JOIN employees e ON s.sales_person_id = e.employee_id JOIN products p ON s.product_id = p.product_id GROUP BY e.first_name, e.last_name, e.employee_id, TRIM(LOWER(TO_CHAR(s.sale_date, 'Day'))), EXTRACT(ISODOW FROM s.sale_date) ORDER BY EXTRACT(ISODOW FROM s.sale_date) ASC, seller ASC;
 
 -- REPORTE 4: Distribución de clientes agrupados por rangos de edad
-SELECT sub.age_category, COUNT(*) AS age_count FROM (SELECT CASE WHEN age BETWEEN 16 AND 25 THEN '16–25' WHEN age BETWEEN 26 AND 40 THEN '26–40' WHEN age > 40 THEN '40+' END AS age_category FROM customers) sub GROUP BY sub.age_category ORDER BY CASE sub.age_category WHEN '16–25' THEN 1 WHEN '26–40' THEN 2 WHEN '40+' THEN 3 END;
+SELECT sub.age_category, COUNT(*) AS age_count FROM (SELECT CASE WHEN age BETWEEN 16 AND 25 THEN '16-25' WHEN age BETWEEN 26 AND 40 THEN '26-40' WHEN age > 40 THEN '40+' END AS age_category FROM customers) sub GROUP BY sub.age_category ORDER BY CASE sub.age_category WHEN '16–25' THEN 1 WHEN '26–40' THEN 2 WHEN '40+' THEN 3 END;
 
 -- REPORTE 5: Cantidad de clientes únicos e ingresos generados desglosados por año y mes
 SELECT TO_CHAR(s.sale_date, 'YYYY-MM') AS selling_month, COUNT(DISTINCT s.customer_id) AS total_customers, FLOOR(SUM(s.quantity * p.price)) AS income FROM sales s JOIN products p ON s.product_id = p.product_id GROUP BY TO_CHAR(s.sale_date, 'YYYY-MM') ORDER BY selling_month ASC;
